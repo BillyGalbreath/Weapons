@@ -38,19 +38,10 @@ public abstract class BaseWeapon implements Listener {
             if (weaponMeta == stackMeta) {
                 return true;
             }
-            if (!hasSameName(weaponMeta, stackMeta)) {
-                return false;
-            }
             if (!hasSameLore(weaponMeta, stackMeta)) {
                 return false;
             }
-            if (!hasSameEnchants(weaponMeta, stackMeta)) {
-                return false;
-            }
             if (!hasSameAttributeModifiers(weaponMeta, stackMeta)) {
-                return false;
-            }
-            if (!hasSameLocalizedName(weaponMeta, stackMeta)) {
                 return false;
             }
             if (!hasSameCustomModelData(weaponMeta, stackMeta)) {
@@ -70,13 +61,6 @@ public abstract class BaseWeapon implements Listener {
         return (!weapon.hasItemMeta() || Bukkit.getItemFactory().equals(weapon.getItemMeta(), stack.getItemMeta()));
     }
 
-    private static boolean hasSameName(ItemMeta meta1, ItemMeta meta2) {
-        if (meta1.hasDisplayName() != meta2.hasDisplayName()) {
-            return false;
-        }
-        return !meta1.hasDisplayName() || meta1.getDisplayName().equals(meta2.getDisplayName());
-    }
-
     private static boolean hasSameLore(ItemMeta meta1, ItemMeta meta2) {
         if (meta1.hasLore() != meta2.hasLore()) {
             return false;
@@ -84,25 +68,11 @@ public abstract class BaseWeapon implements Listener {
         return !meta1.hasLore() || meta1.getLore().equals(meta2.getLore());
     }
 
-    private static boolean hasSameEnchants(ItemMeta meta1, ItemMeta meta2) {
-        if (meta1.hasEnchants() != meta2.hasEnchants()) {
-            return false;
-        }
-        return !meta1.hasEnchants() || meta1.getEnchants().equals(meta2.getEnchants());
-    }
-
     private static boolean hasSameAttributeModifiers(ItemMeta meta1, ItemMeta meta2) {
         if (meta1.hasAttributeModifiers() != meta2.hasAttributeModifiers()) {
             return false;
         }
         return !meta1.hasAttributeModifiers() || meta1.getAttributeModifiers().equals(meta2.getAttributeModifiers());
-    }
-
-    private static boolean hasSameLocalizedName(ItemMeta meta1, ItemMeta meta2) {
-        if (meta1.hasLocalizedName() != meta2.hasLocalizedName()) {
-            return false;
-        }
-        return !meta1.hasLocalizedName() || meta1.getLocalizedName().equals(meta2.getLocalizedName());
     }
 
     private static boolean hasSameCustomModelData(ItemMeta meta1, ItemMeta meta2) {
