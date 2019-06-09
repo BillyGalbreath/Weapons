@@ -73,12 +73,13 @@ public class RainOfArrows extends BaseWeapon {
         ThreadLocalRandom rand = ThreadLocalRandom.current();
 
         for (int i = 0; i < stack.getAmount(); i++) {
-            player.launchProjectile(Arrow.class, new Vector(
+            Arrow arrow = player.launchProjectile(Arrow.class, new Vector(
                     x + rand.nextGaussian() * 0.0075D * inaccuracy,
                     y + rand.nextGaussian() * 0.0075D * inaccuracy,
                     z + rand.nextGaussian() * 0.0075D * inaccuracy
-            ).multiply(power))
-                    .setMetadata("RainOfArrows", FIXED_META);
+            ).multiply(power));
+            arrow.setMetadata("RainOfArrows", FIXED_META);
+            arrow.setCritical(true);
         }
 
         if (player.getGameMode() != GameMode.CREATIVE) {
