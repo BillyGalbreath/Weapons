@@ -1,0 +1,16 @@
+name: "${project.artifactId}"
+main: "${project.groupId}.${project.artifactId}"
+version: "${project.version}"
+description: "${project.artifactId} Bukkit Plugin"
+author: "BillyGalbreath"
+api-version: "1.13"
+
+commands:
+  weapons:
+    description: weapons
+    usage: /<command> (reload | give)
+
+permissions:
+  command.weapons:
+    description: Controls the plugin
+    default: op
