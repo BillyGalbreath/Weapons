@@ -51,6 +51,11 @@ public class RainOfArrows extends BaseWeapon {
             return;
         }
 
+        ItemStack stack = event.getArrowItem();
+        if (stack.getAmount() < 2) {
+            return; // do not trigger special ability for single arrows
+        }
+
         event.setCancelled(true);
 
         Player player = (Player) event.getEntity();
@@ -67,7 +72,6 @@ public class RainOfArrows extends BaseWeapon {
 
         ThreadLocalRandom rand = ThreadLocalRandom.current();
 
-        ItemStack stack = event.getArrowItem();
         for (int i = 0; i < stack.getAmount(); i++) {
             player.launchProjectile(Arrow.class, new Vector(
                     x + rand.nextGaussian() * 0.0075D * inaccuracy,
