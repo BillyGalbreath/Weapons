@@ -17,7 +17,7 @@ public class Weapons extends JavaPlugin {
         Config.reload(this);
         Lang.reload(this);
 
-        WeaponManager.reload();
+        WeaponManager.WEAPONS.forEach((name, weapon) -> weapon.reload());
 
         getCommand("weapons").setExecutor(new CmdWeapons(this));
     }

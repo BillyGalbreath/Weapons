@@ -1,18 +1,14 @@
 package net.pl3x.bukkit.weapons.weapons;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class WeaponManager {
     public static final RainOfArrows RAIN_OF_ARROWS = new RainOfArrows();
 
-    public static void reload() {
-        RAIN_OF_ARROWS.reload();
-    }
+    public static final Map<String, BaseWeapon> WEAPONS = new HashMap<>();
 
-    public static BaseWeapon getWeapon(String name) {
-        switch (name.toUpperCase()) {
-            case "RAIN_OF_ARROWS":
-                return RAIN_OF_ARROWS;
-            default:
-                return null;
-        }
+    static {
+        WEAPONS.put("rain_of_arrows", RAIN_OF_ARROWS);
     }
 }

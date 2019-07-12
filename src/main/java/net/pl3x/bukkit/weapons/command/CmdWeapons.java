@@ -1,14 +1,15 @@
 package net.pl3x.bukkit.weapons.command;
 
-import net.pl3x.bukkit.weapons.weapons.BaseWeapon;
-import net.pl3x.bukkit.weapons.weapons.WeaponManager;
 import net.pl3x.bukkit.weapons.Weapons;
 import net.pl3x.bukkit.weapons.configuration.Config;
 import net.pl3x.bukkit.weapons.configuration.Lang;
+import net.pl3x.bukkit.weapons.weapons.BaseWeapon;
+import net.pl3x.bukkit.weapons.weapons.WeaponManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
@@ -26,10 +27,23 @@ public class CmdWeapons implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 1 && sender.hasPermission("command.weapons")) {
-            return Stream.of("reload", "give")
-                    .filter(arg -> arg.startsWith(args[0].toLowerCase()))
-                    .collect(Collectors.toList());
+        if (sender.hasPermission("command.weapons")) {
+            if (args.length == 1) {
+                return Stream.of("reload", "give")
+                        .filter(arg -> arg.startsWith(args[0].toLowerCase()))
+                        .collect(Collectors.toList());
+            }
+            if (args.length == 2) {
+                return Bukkit.getOnlinePlayers().stream()
+                        .filter(player -> player.getName().toLowerCase().startsWith(args[1]))
+                        .map(HumanEntity::getName)
+                        .collect(Collectors.toList());
+            }
+            if (args.length == 3) {
+                return WeaponManager.WEAPONS.keySet().stream()
+                        .filter(name -> name.startsWith(args[2].toLowerCase()))
+                        .collect(Collectors.toList());
+            }
         }
         return Collections.emptyList();
     }
@@ -53,7 +67,7 @@ public class CmdWeapons implements TabExecutor {
                     }
 
                     if (args.length > 2) {
-                        BaseWeapon weapon = WeaponManager.getWeapon(args[2]);
+                        BaseWeapon weapon = WeaponManager.WEAPONS.get(args[2].toLowerCase());
                         if (weapon == null) {
                             Lang.send(sender, Lang.WEAPON_NOT_FOUND);
                             return true;
@@ -76,7 +90,7 @@ public class CmdWeapons implements TabExecutor {
                 Config.reload(plugin);
                 Lang.reload(plugin);
 
-                WeaponManager.reload();
+                WeaponManager.WEAPONS.forEach((name, weapon) -> weapon.reload());
 
                 response += " reloaded";
             }

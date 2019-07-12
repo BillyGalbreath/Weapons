@@ -27,7 +27,7 @@ public class RainOfArrows extends BaseWeapon {
     private static final double DEG2RAD = Math.PI / 180;
     private static final FixedMetadataValue FIXED_META = new FixedMetadataValue(Weapons.getInstance(), true);
 
-    protected void reload() {
+    public void reload() {
         weapon = new ItemStack(Material.BOW);
         ItemMeta meta = weapon.getItemMeta();
         meta.setDisplayName(Lang.colorize(Lang.BOW_RAIN_OF_ARROWS_NAME));

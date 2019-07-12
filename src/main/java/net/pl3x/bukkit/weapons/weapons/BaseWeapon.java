@@ -13,7 +13,7 @@ public abstract class BaseWeapon implements Listener {
         Bukkit.getPluginManager().registerEvents(this, Weapons.getInstance());
     }
 
-    abstract void reload();
+    public abstract void reload();
 
     public ItemStack getItemStack() {
         return weapon.clone();
