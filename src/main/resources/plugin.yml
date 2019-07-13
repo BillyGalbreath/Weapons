@@ -8,6 +8,7 @@ api-version: "1.13"
 commands:
   weapons:
     description: weapons
+    permission: command.weapons
     usage: /<command> (reload | give)
 
 permissions:
