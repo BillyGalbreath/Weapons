@@ -5,7 +5,7 @@ import net.pl3x.bukkit.weapons.configuration.Config;
 import net.pl3x.bukkit.weapons.configuration.Lang;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -16,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -32,7 +33,7 @@ public class RainOfArrows extends BaseWeapon {
         ItemMeta meta = weapon.getItemMeta();
         meta.setDisplayName(Lang.colorize(Lang.BOW_RAIN_OF_ARROWS_NAME));
         meta.setLore(Lang.colorize(Lang.BOW_RAIN_OF_ARROWS_LORE));
-        meta.addEnchant(Enchantment.ARROW_DAMAGE, 5, true);
+        meta.setCustomModelData(998);
         weapon.setItemMeta(meta);
     }
 
@@ -47,7 +48,7 @@ public class RainOfArrows extends BaseWeapon {
         }
 
         ItemStack bow = event.getBow();
-        if (!WeaponManager.RAIN_OF_ARROWS.equals(bow)) {
+        if (bow == null || !WeaponManager.RAIN_OF_ARROWS.equals(bow)) {
             return;
         }
 
@@ -70,28 +71,42 @@ public class RainOfArrows extends BaseWeapon {
         double power = Config.RAIN_OF_ARROWS_POWER;
         double inaccuracy = Config.RAIN_OF_ARROWS_INACCURACY;
 
+        boolean creative = player.getGameMode() == GameMode.CREATIVE;
+
         ThreadLocalRandom rand = ThreadLocalRandom.current();
 
-        for (int i = 0; i < stack.getAmount(); i++) {
+        int amount = stack.getAmount();
+        for (int i = 0; i < amount; i++) {
             Arrow arrow = player.launchProjectile(Arrow.class, new Vector(
                     x + rand.nextGaussian() * 0.0075D * inaccuracy,
                     y + rand.nextGaussian() * 0.0075D * inaccuracy,
                     z + rand.nextGaussian() * 0.0075D * inaccuracy
             ).multiply(power));
+            arrow.setShooter(player);
             arrow.setMetadata("RainOfArrows", FIXED_META);
-            arrow.setCritical(true);
+            arrow.setCritical(rand.nextBoolean());
+            if (creative) {
+                arrow.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+            }
         }
 
-        if (player.getGameMode() != GameMode.CREATIVE) {
+        if (creative) {
+            event.setConsumeArrow(false);
+        } else {
             stack.setAmount(0);
             event.setConsumeArrow(true);
-        } else {
-            event.setConsumeArrow(false);
+            if (bow.damage(amount)) {
+                player.broadcastItemBreak(player.getInventory().getItemInMainHand().equals(bow) ? EquipmentSlot.HAND : EquipmentSlot.OFF_HAND);
+            }
         }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onArrowHit(ProjectileHitEvent event) {
+        if (!Config.RAIN_OF_ARROWS_RESET_DAMAGE_TICKS) {
+            return;
+        }
+
         if (event.getEntityType() != EntityType.ARROW) {
             return;
         }
@@ -107,6 +122,6 @@ public class RainOfArrows extends BaseWeapon {
         }
 
         // allow rapid damage from multiple arrows
-        ((LivingEntity) entity).setNoDamageTicks(Config.RAIN_OF_ARROWS_NO_DAMAGE_TICKS);
+        ((LivingEntity) entity).setNoDamageTicks(0);
     }
 }

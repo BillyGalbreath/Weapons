@@ -15,14 +15,14 @@ public class Config {
 
     public static double RAIN_OF_ARROWS_POWER = 3.0D;
     public static double RAIN_OF_ARROWS_INACCURACY = 5.0D;
-    public static int RAIN_OF_ARROWS_NO_DAMAGE_TICKS = 0;
+    public static boolean RAIN_OF_ARROWS_RESET_DAMAGE_TICKS = false;
 
     private static void init() {
         LANGUAGE_FILE = getString("language-file", LANGUAGE_FILE);
 
         RAIN_OF_ARROWS_POWER = getDouble("rain-of-arrows.power", RAIN_OF_ARROWS_POWER);
         RAIN_OF_ARROWS_INACCURACY = getDouble("rain-of-arrows.inaccuracy", RAIN_OF_ARROWS_INACCURACY);
-        RAIN_OF_ARROWS_NO_DAMAGE_TICKS = getInt("rain-of-arrows.no-damage-ticks", RAIN_OF_ARROWS_NO_DAMAGE_TICKS);
+        RAIN_OF_ARROWS_RESET_DAMAGE_TICKS = getBoolean("rain-of-arrows.reset-damage-ticks", RAIN_OF_ARROWS_RESET_DAMAGE_TICKS);
     }
 
     // ############################  DO NOT EDIT BELOW THIS LINE  ############################

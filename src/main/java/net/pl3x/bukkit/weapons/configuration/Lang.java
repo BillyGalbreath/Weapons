@@ -16,7 +16,6 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class Lang {
-    public static String COMMAND_NO_PERMISSION = "&4You do not have permission for that command!";
     public static String PLAYER_NOT_ONLINE = "&4Player not online!";
     public static String WEAPON_NOT_FOUND = "&4Weapon not found!";
 
@@ -24,7 +23,6 @@ public class Lang {
     public static List<String> BOW_RAIN_OF_ARROWS_LORE = Arrays.asList("Shoots entire stacks", "with a single shot");
 
     private static void init() {
-        COMMAND_NO_PERMISSION = getString("command-no-permission", COMMAND_NO_PERMISSION);
         PLAYER_NOT_ONLINE = getString("player-not-online", PLAYER_NOT_ONLINE);
         WEAPON_NOT_FOUND = getString("weapon-not-found", WEAPON_NOT_FOUND);
 

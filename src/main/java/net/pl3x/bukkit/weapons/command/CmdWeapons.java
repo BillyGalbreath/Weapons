@@ -33,13 +33,13 @@ public class CmdWeapons implements TabExecutor {
                         .filter(arg -> arg.startsWith(args[0].toLowerCase()))
                         .collect(Collectors.toList());
             }
-            if (args.length == 2) {
+            if (args.length == 2 && args[0].toLowerCase().equals("give")) {
                 return Bukkit.getOnlinePlayers().stream()
                         .filter(player -> player.getName().toLowerCase().startsWith(args[1]))
                         .map(HumanEntity::getName)
                         .collect(Collectors.toList());
             }
-            if (args.length == 3) {
+            if (args.length == 3 && args[0].toLowerCase().equals("give")) {
                 return WeaponManager.WEAPONS.keySet().stream()
                         .filter(name -> name.startsWith(args[2].toLowerCase()))
                         .collect(Collectors.toList());
@@ -50,11 +50,6 @@ public class CmdWeapons implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("command.weapons")) {
-            Lang.send(sender, Lang.COMMAND_NO_PERMISSION);
-            return true;
-        }
-
         String response = "&d" + plugin.getName() + " v" + plugin.getDescription().getVersion();
 
         if (args.length > 0) {
