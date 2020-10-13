@@ -1,6 +1,11 @@
 package net.pl3x.bukkit.weapons.configuration;
 
 import com.google.common.base.Throwables;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -8,26 +13,13 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-
 public class Lang {
     public static String PLAYER_NOT_ONLINE = "&4Player not online!";
     public static String WEAPON_NOT_FOUND = "&4Weapon not found!";
 
-    public static String BOW_RAIN_OF_ARROWS_NAME = "&bRain of Arrows";
-    public static List<String> BOW_RAIN_OF_ARROWS_LORE = Arrays.asList("Shoots entire stacks", "with a single shot");
-
     private static void init() {
         PLAYER_NOT_ONLINE = getString("player-not-online", PLAYER_NOT_ONLINE);
         WEAPON_NOT_FOUND = getString("weapon-not-found", WEAPON_NOT_FOUND);
-
-        BOW_RAIN_OF_ARROWS_NAME = getString("rain-of-arrows.name", BOW_RAIN_OF_ARROWS_NAME);
-        BOW_RAIN_OF_ARROWS_LORE = getStringList("rain-of-arrows.lore", BOW_RAIN_OF_ARROWS_LORE);
     }
 
     // ############################  DO NOT EDIT BELOW THIS LINE  ############################
@@ -91,7 +83,7 @@ public class Lang {
      * @return Colorized String
      */
     public static String colorize(String str) {
-        if (str == null) {
+        if (str == null || str.isEmpty()) {
             return "";
         }
         str = ChatColor.translateAlternateColorCodes('&', str);

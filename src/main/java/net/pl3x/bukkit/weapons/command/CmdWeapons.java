@@ -40,7 +40,7 @@ public class CmdWeapons implements TabExecutor {
                         .collect(Collectors.toList());
             }
             if (args.length == 3 && args[0].toLowerCase().equals("give")) {
-                return WeaponManager.WEAPONS.keySet().stream()
+                return WeaponManager.WEAPONS_REGISTRY.keySet().stream()
                         .filter(name -> name.startsWith(args[2].toLowerCase()))
                         .collect(Collectors.toList());
             }
@@ -62,7 +62,7 @@ public class CmdWeapons implements TabExecutor {
                     }
 
                     if (args.length > 2) {
-                        BaseWeapon weapon = WeaponManager.WEAPONS.get(args[2].toLowerCase());
+                        BaseWeapon weapon = WeaponManager.WEAPONS_REGISTRY.get(args[2].toLowerCase());
                         if (weapon == null) {
                             Lang.send(sender, Lang.WEAPON_NOT_FOUND);
                             return true;
@@ -85,7 +85,7 @@ public class CmdWeapons implements TabExecutor {
                 Config.reload(plugin);
                 Lang.reload(plugin);
 
-                WeaponManager.WEAPONS.forEach((name, weapon) -> weapon.reload());
+                WeaponManager.WEAPONS_REGISTRY.forEach((name, weapon) -> weapon.reload());
 
                 response += " reloaded";
             }

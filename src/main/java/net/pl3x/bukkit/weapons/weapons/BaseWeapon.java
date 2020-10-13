@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public abstract class BaseWeapon implements Listener {
     ItemStack weapon;
 
-    BaseWeapon() {
+    public BaseWeapon() {
         Bukkit.getPluginManager().registerEvents(this, Weapons.getInstance());
     }
 
@@ -29,74 +29,13 @@ public abstract class BaseWeapon implements Listener {
         if (weapon.getType() != stack.getType()) {
             return false;
         }
-        if (weapon.hasItemMeta() != stack.hasItemMeta()) {
+        if (!stack.hasItemMeta()) {
             return false;
         }
-        if (weapon.hasItemMeta()) {
-            ItemMeta weaponMeta = weapon.getItemMeta();
-            ItemMeta stackMeta = stack.getItemMeta();
-            if (weaponMeta == stackMeta) {
-                return true;
-            }
-            if (!hasSameLore(weaponMeta, stackMeta)) {
-                return false;
-            }
-            if (!hasSameAttributeModifiers(weaponMeta, stackMeta)) {
-                return false;
-            }
-            if (!hasSameCustomModelData(weaponMeta, stackMeta)) {
-                return false;
-            }
-            if (!hasSameDestroyableKeys(weaponMeta, stackMeta)) {
-                return false;
-            }
-            if (!hasSamePlaceableKeys(weaponMeta, stackMeta)) {
-                return false;
-            }
-            if (!hasSameItemFlags(weaponMeta, stackMeta)) {
-                return false;
-            }
+        ItemMeta stackMeta = stack.getItemMeta();
+        if (!stackMeta.hasCustomModelData()) {
             return true;
         }
-        return (!weapon.hasItemMeta() || Bukkit.getItemFactory().equals(weapon.getItemMeta(), stack.getItemMeta()));
-    }
-
-    private static boolean hasSameLore(ItemMeta meta1, ItemMeta meta2) {
-        if (meta1.hasLore() != meta2.hasLore()) {
-            return false;
-        }
-        return !meta1.hasLore() || meta1.getLore().equals(meta2.getLore());
-    }
-
-    private static boolean hasSameAttributeModifiers(ItemMeta meta1, ItemMeta meta2) {
-        if (meta1.hasAttributeModifiers() != meta2.hasAttributeModifiers()) {
-            return false;
-        }
-        return !meta1.hasAttributeModifiers() || meta1.getAttributeModifiers().equals(meta2.getAttributeModifiers());
-    }
-
-    private static boolean hasSameCustomModelData(ItemMeta meta1, ItemMeta meta2) {
-        if (meta1.hasCustomModelData() != meta2.hasCustomModelData()) {
-            return false;
-        }
-        return !meta1.hasCustomModelData() || meta1.getCustomModelData() == meta2.getCustomModelData();
-    }
-
-    private static boolean hasSameDestroyableKeys(ItemMeta meta1, ItemMeta meta2) {
-        if (meta1.hasDestroyableKeys() != meta2.hasDestroyableKeys()) {
-            return false;
-        }
-        return !meta1.hasDestroyableKeys() || meta1.getDestroyableKeys().equals(meta2.getDestroyableKeys());
-    }
-
-    private static boolean hasSamePlaceableKeys(ItemMeta meta1, ItemMeta meta2) {
-        if (meta1.hasPlaceableKeys() != meta2.hasPlaceableKeys()) {
-            return false;
-        }
-        return !meta1.hasPlaceableKeys() || meta1.getPlaceableKeys().equals(meta2.getPlaceableKeys());
-    }
-
-    private static boolean hasSameItemFlags(ItemMeta meta1, ItemMeta meta2) {
-        return meta1.getItemFlags().equals(meta2.getItemFlags());
+        return weapon.getItemMeta().getCustomModelData() == stackMeta.getCustomModelData();
     }
 }

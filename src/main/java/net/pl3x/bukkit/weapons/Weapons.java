@@ -4,7 +4,9 @@ import net.pl3x.bukkit.weapons.command.CmdWeapons;
 import net.pl3x.bukkit.weapons.configuration.Config;
 import net.pl3x.bukkit.weapons.configuration.Lang;
 import net.pl3x.bukkit.weapons.weapons.WeaponManager;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 public class Weapons extends JavaPlugin {
     private static Weapons instance;
@@ -17,12 +19,19 @@ public class Weapons extends JavaPlugin {
         Config.reload(this);
         Lang.reload(this);
 
-        WeaponManager.WEAPONS.forEach((name, weapon) -> weapon.reload());
+        WeaponManager.WEAPONS_REGISTRY.forEach((name, weapon) -> weapon.reload());
 
-        getCommand("weapons").setExecutor(new CmdWeapons(this));
+        PluginCommand command = getCommand("weapons");
+        if (command != null) {
+            command.setExecutor(new CmdWeapons(this));
+        }
     }
 
     public static Weapons getInstance() {
         return instance;
+    }
+
+    public static BukkitTask delay(Runnable runnable, int delay) {
+        return instance.getServer().getScheduler().runTaskLater(instance, runnable, delay);
     }
 }

@@ -1,5 +1,6 @@
 package net.pl3x.bukkit.weapons.weapons;
 
+import java.util.concurrent.ThreadLocalRandom;
 import net.pl3x.bukkit.weapons.Weapons;
 import net.pl3x.bukkit.weapons.configuration.Config;
 import net.pl3x.bukkit.weapons.configuration.Lang;
@@ -22,8 +23,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 public class RainOfArrows extends BaseWeapon {
     private static final double DEG2RAD = Math.PI / 180;
     private static final FixedMetadataValue FIXED_META = new FixedMetadataValue(Weapons.getInstance(), true);
@@ -31,8 +30,8 @@ public class RainOfArrows extends BaseWeapon {
     public void reload() {
         weapon = new ItemStack(Material.BOW);
         ItemMeta meta = weapon.getItemMeta();
-        meta.setDisplayName(Lang.colorize(Lang.BOW_RAIN_OF_ARROWS_NAME));
-        meta.setLore(Lang.colorize(Lang.BOW_RAIN_OF_ARROWS_LORE));
+        meta.setDisplayName(Lang.colorize(Config.RAIN_OF_ARROWS_NAME));
+        meta.setLore(Lang.colorize(Config.RAIN_OF_ARROWS_LORE));
         meta.setCustomModelData(998);
         weapon.setItemMeta(meta);
     }
@@ -48,12 +47,12 @@ public class RainOfArrows extends BaseWeapon {
         }
 
         ItemStack bow = event.getBow();
-        if (bow == null || !WeaponManager.RAIN_OF_ARROWS.equals(bow)) {
+        if (!this.equals(bow)) {
             return;
         }
 
-        ItemStack stack = event.getArrowItem();
-        if (stack.getAmount() < 2) {
+        ItemStack stack = event.getConsumable();
+        if (stack == null || stack.getAmount() < 2) {
             return; // do not trigger special ability for single arrows
         }
 
@@ -91,11 +90,11 @@ public class RainOfArrows extends BaseWeapon {
         }
 
         if (creative) {
-            event.setConsumeArrow(false);
+            event.setConsumeItem(false);
         } else {
             stack.setAmount(0);
-            event.setConsumeArrow(true);
-            if (bow.damage(amount)) {
+            event.setConsumeItem(true);
+            if (bow != null && bow.damage(amount)) {
                 player.broadcastItemBreak(player.getInventory().getItemInMainHand().equals(bow) ? EquipmentSlot.HAND : EquipmentSlot.OFF_HAND);
             }
         }
