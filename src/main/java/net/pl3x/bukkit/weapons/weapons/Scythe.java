@@ -1,8 +1,6 @@
 package net.pl3x.bukkit.weapons.weapons;
 
 import net.pl3x.bukkit.weapons.Weapons;
-import net.pl3x.bukkit.weapons.configuration.Config;
-import net.pl3x.bukkit.weapons.configuration.Lang;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
@@ -12,18 +10,23 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class Scythe extends BaseWeapon {
+    private int reach;
+    private boolean collectDrops;
+
     private boolean inProgress;
 
+    public Scythe(String id) {
+        super(id);
+    }
+
+    @Override
     public void reload() {
-        weapon = new ItemStack(Material.NETHERITE_HOE);
-        ItemMeta meta = weapon.getItemMeta();
-        meta.setDisplayName(Lang.colorize(Config.SCYTHE_NAME));
-        meta.setLore(Lang.colorize(Config.SCYTHE_LORE));
-        meta.setCustomModelData(999);
-        weapon.setItemMeta(meta);
+        super.reload();
+
+        this.reach = config.getInt("reach", 2);
+        this.collectDrops = config.getBoolean("collect-drops", true);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -46,7 +49,6 @@ public class Scythe extends BaseWeapon {
 
         inProgress = true;
 
-        int reach = Config.SCYTHE_REACH;
         for (int x = -reach; x <= reach; x++) {
             for (int y = -reach; y <= reach; y++) {
                 for (int z = -reach; z <= reach; z++) {

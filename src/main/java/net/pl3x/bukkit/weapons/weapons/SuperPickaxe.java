@@ -1,7 +1,5 @@
 package net.pl3x.bukkit.weapons.weapons;
 
-import net.pl3x.bukkit.weapons.configuration.Config;
-import net.pl3x.bukkit.weapons.configuration.Lang;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -11,25 +9,24 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class SuperPickaxe extends BaseWeapon {
     private Material inProgress;
     protected int length, width, height;
     protected boolean singleType;
 
-    public void reload() {
-        weapon = new ItemStack(Material.NETHERITE_PICKAXE);
-        ItemMeta meta = weapon.getItemMeta();
-        meta.setDisplayName(Lang.colorize(Config.SUPER_PICKAXE_NAME));
-        meta.setLore(Lang.colorize(Config.SUPER_PICKAXE_LORE));
-        meta.setCustomModelData(999);
-        weapon.setItemMeta(meta);
+    public SuperPickaxe(String id) {
+        super(id);
+    }
 
-        this.length = Config.SUPER_PICKAXE_LENGTH;
-        this.width = Config.SUPER_PICKAXE_WIDTH;
-        this.height = Config.SUPER_PICKAXE_HEIGHT;
-        this.singleType = Config.SUPER_PICKAXE_SINGLE_TYPE;
+    @Override
+    public void reload() {
+        super.reload();
+
+        this.length = config.getInt("length", 2);
+        this.width = config.getInt("width", 2);
+        this.height = config.getInt("height", 2);
+        this.singleType = config.getBoolean("single-type", true);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

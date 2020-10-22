@@ -1,0 +1,45 @@
+language-file: "lang-en.yml"
+
+rain_of_arrows:
+  name: "&bRain of Arrows"
+  lore:
+    - "Shoots entire stacks"
+    - "with a single shot"
+  material: BOW
+  model: 998
+  power: 3.0
+  inaccuracy: 5.0
+  reset-damage-ticks: false
+
+super_pickaxe:
+  name: "&rSuper Pickaxe"
+  lore:
+    - "Breaks multiple blocks"
+    - "of the same type"
+  material: NETHERITE_PICKAXE
+  model: 999
+  length: 2
+  width: 2
+  height: 2
+  single-type: true
+
+the_hammer:
+  name: "&rThe Hammer"
+  lore:
+    - "Breaks multiple blocks"
+    - "of any type"
+  material: NETHERITE_PICKAXE
+  model: 998
+  length: 2
+  width: 0
+  height: 2
+  single-type: false
+
+scythe:
+  name: "&rScythe"
+  lore:
+    - "Harvests crops"
+  material: NETHERITE_HOE
+  model: 999
+  reach: 2
+  collect-drops: true

@@ -7,7 +7,7 @@ api-version: "1.13"
 
 commands:
   weapons:
-    description: weapons
+    description: Controls the plugin
     permission: command.weapons
     usage: /<command> (reload | give)
 

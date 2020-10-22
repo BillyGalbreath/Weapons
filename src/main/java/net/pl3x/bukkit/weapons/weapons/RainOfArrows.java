@@ -2,10 +2,7 @@ package net.pl3x.bukkit.weapons.weapons;
 
 import java.util.concurrent.ThreadLocalRandom;
 import net.pl3x.bukkit.weapons.Weapons;
-import net.pl3x.bukkit.weapons.configuration.Config;
-import net.pl3x.bukkit.weapons.configuration.Lang;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -19,7 +16,6 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
@@ -27,13 +23,21 @@ public class RainOfArrows extends BaseWeapon {
     private static final double DEG2RAD = Math.PI / 180;
     private static final FixedMetadataValue FIXED_META = new FixedMetadataValue(Weapons.getInstance(), true);
 
+    private double power;
+    private double inaccuracy;
+    private boolean resetDamageTicks;
+
+    public RainOfArrows(String id) {
+        super(id);
+    }
+
+    @Override
     public void reload() {
-        weapon = new ItemStack(Material.BOW);
-        ItemMeta meta = weapon.getItemMeta();
-        meta.setDisplayName(Lang.colorize(Config.RAIN_OF_ARROWS_NAME));
-        meta.setLore(Lang.colorize(Config.RAIN_OF_ARROWS_LORE));
-        meta.setCustomModelData(998);
-        weapon.setItemMeta(meta);
+        super.reload();
+
+        this.power = config.getDouble("power", 3.0D);
+        this.inaccuracy = config.getDouble("inaccuracy", 5.0D);
+        this.resetDamageTicks = config.getBoolean("reset-damage-ticks", false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -67,9 +71,6 @@ public class RainOfArrows extends BaseWeapon {
         double y = -Math.sin(pitch);
         double z = Math.cos(yaw) * Math.cos(pitch);
 
-        double power = Config.RAIN_OF_ARROWS_POWER;
-        double inaccuracy = Config.RAIN_OF_ARROWS_INACCURACY;
-
         boolean creative = player.getGameMode() == GameMode.CREATIVE;
 
         ThreadLocalRandom rand = ThreadLocalRandom.current();
@@ -102,7 +103,7 @@ public class RainOfArrows extends BaseWeapon {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onArrowHit(ProjectileHitEvent event) {
-        if (!Config.RAIN_OF_ARROWS_RESET_DAMAGE_TICKS) {
+        if (!resetDamageTicks) {
             return;
         }
 
