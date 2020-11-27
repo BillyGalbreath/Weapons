@@ -12,6 +12,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Collections;
 import java.util.List;

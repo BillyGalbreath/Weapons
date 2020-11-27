@@ -1,5 +1,11 @@
 language-file: "lang-en.yml"
 
+fangs_bow:
+  name: "&rFangs Bow"
+  lore: []
+  material: BOW
+  model: 999
+
 rain_of_arrows:
   name: "&bRain of Arrows"
   lore:
